@@ -33,6 +33,15 @@ set :mongrel_address, '127.0.0.1'
 set :mongrel_conf, "/etc/mongrel_cluster/#{application}.yml"
 
 # =============================================================
+# Thin Settings
+# =============================================================
+set :thin_servers, 1
+set :thin_port, 7007
+set :thin_environment, 'production'
+set :thin_address, '127.0.0.1'
+set :thin_conf, "#{shared_path}/config/thin.yml"
+
+# =============================================================
 # Nginx Settings
 # =============================================================
 set :nginx_sites_available, "/usr/local/nginx/sites-available"
