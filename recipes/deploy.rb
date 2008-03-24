@@ -7,15 +7,15 @@ namespace :deploy do
   end
 
   task :restart do
-    send("#{app_server.to_s}.restart")
+    eval("#{app_server.to_s}.restart")
   end
   
   task :start do
-    send("#{app_server.to_s}.start")
+    eval("#{app_server.to_s}.start")
   end
   
   task :stop do
-    send("#{app_server.to_s}.stop")
+    eval("#{app_server.to_s}.stop")
   end
 
   desc "Shows tail of production log"
