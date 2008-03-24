@@ -1,9 +1,9 @@
 
 # from topfunky's peepserver plugin
 # http://topfunky.net/svn/plugins/peepserver
-upstream mongrel_<%= application.gsub('.', '_') %> {
-  <% mongrel_port.upto(mongrel_port - 1 + mongrel_servers) do |port| %>
-  server 127.0.0.1:<%= port %>;
+upstream app_<%= application.gsub('.', '_') %> {
+  <% app_port.upto(app_server_port - 1 + app_servers) do |port| %>
+  server <%= app_server_address %>:<%= port %>;
   <% end %>
 }
 
@@ -82,12 +82,13 @@ server {
     # and then send it on its way to the next config rule.
     # if there is no file on the fs then it sets all the 
     # necessary headers and proxies to our upstream mongrels
+    # or thin servers
     if (-f $request_filename.html) {
       rewrite (.*) $1.html break;
     }
 
     if (!-f $request_filename) {
-      proxy_pass http://mongrel_<%= application.gsub('.', '_') %>;
+      proxy_pass http://app_<%= application.gsub('.', '_') %>;
       break;
     }
   }

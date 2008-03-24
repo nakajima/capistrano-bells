@@ -18,28 +18,22 @@ role :db,  domain, :primary => true
 set :repository,  "repository url"
 set :deploy_to, "/absolute/path/to/location/your/server"
 set :deploy_via, :checkout
-set :config_files, %w(database.yml)
+set :config_files, %w()
 
 # SSH Keys for caching (you must generate these first.)
 ssh_options[:keys] = %w(~/.ssh/mykey1 ~/.ssh/mykey2)
 
-# =============================================================
-# Mongrel Settings
-# =============================================================
-set :mongrel_servers, 1
-set :mongrel_port, 7007
-set :mongrel_environment, 'production'
-set :mongrel_address, '127.0.0.1'
-set :mongrel_conf, "/etc/mongrel_cluster/#{application}.yml"
+# Change this to :thin if you want to use Thin instead.
+set :app_server, :mongrel
 
 # =============================================================
-# Thin Settings
+# Application Server Settings (Thin or Mongrel)
 # =============================================================
-set :thin_servers, 1
-set :thin_port, 7007
-set :thin_environment, 'production'
-set :thin_address, '127.0.0.1'
-set :thin_conf, "#{shared_path}/config/thin.yml"
+set :app_servers, 1
+set :app_server_port, 7007
+set :app_environment, 'production'
+set :app_server_address, '127.0.0.1'
+set :app_server_conf, "#{shared_path}/config/thin.yml"
 
 # =============================================================
 # Nginx Settings
