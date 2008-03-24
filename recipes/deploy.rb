@@ -20,15 +20,10 @@ namespace :deploy do
 
   desc "Shows tail of production log"
   task :tail do
-    stream "tail -f #{current_path}/log/production.log"
-  end
-  
-  desc "Show tail of mongrel log"
-  task :tail_mongrel do
-    stream "tail -f #{current_path}/log/mongrel.log"
+    stream "tail -f #{current_path}/log/#{app_environment}.log"
   end
 
-  # after "deploy:update_code", "deploy:copy_config_files"
+  after "deploy:update_code", "deploy:copy_config_files"
   desc "Copy production database.yml to live app"
   task :copy_config_files do
     config_files.each do |file|
