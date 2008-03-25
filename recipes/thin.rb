@@ -1,6 +1,6 @@
 namespace :thin do
   desc "Configure a new thin cluster"
-  task :config, :roles => :app do
+  task :configure, :roles => :app do
     argv = []
     argv << "thin config"
     argv << "-s #{thin_servers.to_s}"
