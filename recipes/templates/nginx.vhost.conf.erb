@@ -21,9 +21,14 @@ server {
 
   # doc root
   root <%= deploy_to %>/current/public;
+  
+  log_format main '$remote_addr - $remote_user [$time_local] '
+                  '"$request" $status  $body_bytes_sent "$http_referer" '
+                  '"$http_user_agent" "$http_x_forwarded_for"';
 
   # vhost specific access log
   access_log  <%= deploy_to %>/shared/log/nginx.vhost.access.log  main;
+  error_log  <%= deploy_to %>/shared/log/nginx.vhost.error.log  debug;
 
   # this rewrites all the requests to the maintenance.html
   # page if it exists in the doc root. This is for capistrano's
