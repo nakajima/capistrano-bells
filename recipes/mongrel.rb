@@ -10,12 +10,12 @@ namespace :mongrel do
     
     argv = []
     argv << "mongrel_rails cluster::configure"
-    argv << "-N #{mongrel_servers.to_s}"
-    argv << "-p #{mongrel_port.to_s}"
-    argv << "-e #{mongrel_environment}"
-    argv << "-a #{mongrel_address}"
+    argv << "-N #{app_servers.to_s}"
+    argv << "-p #{app_server_port.to_s}"
+    argv << "-e #{app_server_port}"
+    argv << "-a #{app_server_address}"
     argv << "-c #{current_path}"
-    argv << "-C #{mongrel_conf}"
+    argv << "-C #{app_server_conf}"
     cmd = argv.join " "
     sudo cmd
   end
@@ -26,7 +26,7 @@ namespace :mongrel do
   DESC
   task :start , :roles => :app do
     set_mongrel_conf
-    run "mongrel_rails cluster::start -C #{mongrel_conf}"
+    run "mongrel_rails cluster::start -C #{app_server_conf}"
   end
 
   desc <<-DESC
@@ -35,7 +35,7 @@ namespace :mongrel do
   DESC
   task :restart , :roles => :app do
     set_mongrel_conf
-    run "mongrel_rails cluster::restart -C #{mongrel_conf}"
+    run "mongrel_rails cluster::restart -C #{app_server_conf}"
   end
 
   desc <<-DESC
@@ -45,10 +45,10 @@ namespace :mongrel do
   DESC
   task :stop , :roles => :app do
     set_mongrel_conf
-    run "mongrel_rails cluster::stop -C #{mongrel_conf}"
+    run "mongrel_rails cluster::stop -C #{app_server_conf}"
   end
 
   def set_mongrel_conf
-    set :mongrel_conf, "/etc/mongrel_cluster/#{application}.yml" unless mongrel_conf
+    set :app_server_conf, "/etc/mongrel_cluster/#{application}.yml" unless app_server_conf
   end
 end
