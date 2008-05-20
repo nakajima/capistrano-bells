@@ -2,7 +2,7 @@
 # from topfunky's peepserver plugin
 # http://topfunky.net/svn/plugins/peepserver
 upstream app_<%= application.gsub('.', '_') %> {
-  <% app_port.upto(app_server_port - 1 + app_servers) do |port| %>
+  <% app_server_port.upto(app_server_port - 1 + app_servers) do |port| %>
   server <%= app_server_address %>:<%= port %>;
   <% end %>
 }

@@ -7,7 +7,7 @@ Dir['vendor/plugins/*/recipes/*.rb'].each { |plugin| load(plugin) }
 # General configuration settings, required for all recipes!
 set :application, "project-name"
 set :domain, "project-domain"
-# set :extra_domains, %w(www.project-domain.com)
+set :extra_domains, %w() # Add something like www.project-domain.com
 role :app, domain
 role :web, domain
 role :db,  domain, :primary => true
@@ -25,6 +25,9 @@ ssh_options[:keys] = %w(~/.ssh/mykey1 ~/.ssh/mykey2)
 
 # Change this to :thin if you want to use Thin instead.
 set :app_server, :mongrel
+
+# Change this to :merb if you want to use Merb instead. (experimental)
+set :app_framework, :rails
 
 # =============================================================
 # Application Server Settings (Thin or Mongrel)
