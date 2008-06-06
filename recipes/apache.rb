@@ -28,11 +28,10 @@ namespace :deploy do
     desc "Configure virtual server on remote app."
     task :setup do
       logger.info "generating .conf file"
-      conf = <<-CONF  
+      template_file = %q{
 <VirtualHost *:80>
   ServerName #{domain}
-
-    ServerAlias www.#{domain}
+  ServerAlias www.#{domain}
 
   DocumentRoot #{deploy_to}/current/public
 
@@ -44,10 +43,10 @@ namespace :deploy do
   </Directory>
 
   # Configure mongrel_cluster 
+  
   <Proxy balancer://#{application}_cluster>
-
-  BalancerMember http://#{mongrel_address}:#{mongrel_port}
-
+  <% (app_server_port.to_i...(app_servers.to_i+app_server_port.to_i)).each do |port| %><%= %{BalancerMember http://#{mongrel_address}:#{port}} %>
+  <% end %>
   </Proxy>
 
   RewriteEngine On
@@ -80,10 +79,10 @@ namespace :deploy do
   ErrorLog logs/#{domain}-error_log
   CustomLog logs/#{domain}-access_log combined
 </VirtualHost>
-      CONF
+}
       
       require 'erb'
-      result = ERB.new(conf).result(binding)
+      result = ERB.new(template_file).result(binding)
       put result, "#{application}.conf"
       logger.info "placing #{application}.conf on remote server"
       sudo "mv #{application}.conf #{apache_conf}"
