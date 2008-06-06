@@ -30,12 +30,12 @@ namespace :deploy do
       logger.info "generating .conf file"
       template_file = %q{
 <VirtualHost *:80>
-  ServerName #{domain}
-  ServerAlias www.#{domain}
+  ServerName <%= domain %>
+  ServerAlias www.<%= domain %>
 
-  DocumentRoot #{deploy_to}/current/public
+  DocumentRoot <%= deploy_to %>/current/public
 
-  <Directory #{deploy_to}/current/public>
+  <Directory <%= deploy_to %>/current/public>
     Options FollowSymLinks
     AllowOverride None
     Order allow,deny
@@ -44,8 +44,8 @@ namespace :deploy do
 
   # Configure mongrel_cluster 
   
-  <Proxy balancer://#{application}_cluster>
-  <% (app_server_port.to_i...(app_servers.to_i+app_server_port.to_i)).each do |port| %><%= %{BalancerMember http://#{mongrel_address}:#{port}} %>
+  <Proxy balancer://<%=application%>_cluster>
+  <% (app_server_port.to_i...(app_servers.to_i+app_server_port.to_i)).each do |port| %><%= %{BalancerMember http://#{app_server_address}:#{port}} %>
   <% end %>
   </Proxy>
 
@@ -68,7 +68,7 @@ namespace :deploy do
 
   # Redirect all non-static requests to cluster
   RewriteCond %{DOCUMENT_ROOT}/%{REQUEST_FILENAME} !-f
-  RewriteRule ^/(.*)$ balancer://#{application}_cluster%{REQUEST_URI} [P,QSA,L]
+  RewriteRule ^/(.*)$ balancer://<%=application%>_cluster%{REQUEST_URI} [P,QSA,L]
 
   # Deflate
   AddOutputFilterByType DEFLATE text/html text/plain text/xml
@@ -76,14 +76,15 @@ namespace :deploy do
   BrowserMatch ^Mozilla/4\.0[678] no-gzip
   BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
 
-  ErrorLog logs/#{domain}-error_log
-  CustomLog logs/#{domain}-access_log combined
+  ErrorLog logs/<%=domain%>-error_log
+  CustomLog logs/<%=domain%>-access_log combined
 </VirtualHost>
 }
       
       require 'erb'
-      result = ERB.new(template_file).result(binding)
-      put result, "#{application}.conf"
+      
+      config = ERB.new(template_file)
+      put config.result(binding), "#{application}.conf"
       logger.info "placing #{application}.conf on remote server"
       sudo "mv #{application}.conf #{apache_conf}"
       sudo "chown deploy:users #{apache_conf}"
