@@ -12,7 +12,7 @@ namespace :mongrel do
     argv << "mongrel_rails cluster::configure"
     argv << "-N #{app_servers.to_s}"
     argv << "-p #{app_server_port.to_s}"
-    argv << "-e #{app_server_port}"
+    argv << "-e #{app_environment}"
     argv << "-a #{app_server_address}"
     argv << "-c #{current_path}"
     argv << "-C #{app_server_conf}"
