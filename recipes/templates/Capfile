@@ -53,9 +53,9 @@ set :apache_conf, "/usr/local/apache2/conf/apps/#{application}.conf"
 # set :apache_default_vhost_conf, nil
 set :apache_ctl, "/usr/local/apache2/bin/apachectl"
 set :apache_server_aliases, []
-set :apache_proxy_port, mongrel_port
-set :apache_proxy_servers, mongrel_servers
-set :apache_proxy_address, mongrel_address
+set :apache_proxy_port, app_server_port
+set :apache_proxy_servers, app_servers
+set :apache_proxy_address, app_server_address
 # set :apache_ssl_enabled, false
 # set :apache_ssl_ip, nil
 # set :apache_ssl_forward_all, false
