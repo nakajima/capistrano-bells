@@ -6,6 +6,4 @@
 Capistrano Bells is a collection of recipes intended to make deploying
 Rails apps easier. That's it and that's all.
 
-See this blog post for a bit of info: http://devthatweb.com/view/bells-is-back
-
 Copyright (c) 2007-2008 Pat Nakajima, released under the MIT license
